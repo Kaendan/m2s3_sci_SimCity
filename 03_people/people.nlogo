@@ -1,17 +1,13 @@
-globals [
-  game-started?     ;; initially false, becomes true when player first presses GO
-  game-over?        ;; initially false, becomes true if the player loses
-]
-
 breed [road_builders road_builder]
 road_builders-own [generation generation_max travelled_distance max_distance future_rotation]
 
 breed [houses house]
+breed [people person]
+people-own [on_road]
 
 to set_first_road_builder
   clear-all
-  set game-started? false
-  set game-over? false
+  reset-ticks
 
   ask patches [set pcolor green]
 
@@ -90,14 +86,6 @@ to hatch_builder [rotation]
 end
 
 to go
-  if game-over? [
-    stop
-  ]
-
-  if not game-started? [
-    set game-started? true
-  ]
-
   if mouse-down? [
     ask patch (round mouse-xcor) (round mouse-ycor) [
       if pcolor = green and not any? turtles-here with [shape = "house"] and any? neighbors4 with [pcolor = black]
@@ -105,6 +93,7 @@ to go
          sprout_house
         ]
     ]
+    tick
   ]
 end
 
@@ -113,13 +102,66 @@ to sprout_house
    set color red
    set shape "house"
   ]
+
+  sprout_person
+end
+
+to sprout_person
+  sprout-people 1 [
+   set heading 0
+   set color white
+   set shape "car"
+   hide-turtle
+   set on_road false
+   create-links-with (turtles-here with [shape = "house"])
+  ]
+end
+
+to look_for_job
+  ask people [
+    ifelse not on_road [
+      take_car
+      show-turtle
+      set on_road true
+    ] [
+      follow_road
+    ]
+  ]
+  tick
+end
+
+to take_car
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+
+  move-to one-of ((patch-set f r l b) with [pcolor = black])
+  if (patch-here = r) [right 90]
+  if (patch-here = l) [left 90]
+  if (patch-here = b) [rt 180]
+end
+
+to follow_road
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+
+  ifelse any? ((patch-set f r l) with [pcolor = black]) [
+      move-to one-of ((patch-set f r l) with [pcolor = black])
+      ifelse (patch-here = r) [right 90]
+      [ if (patch-here = l) [left 90] ]
+  ] [
+      rt 180
+      move-to patch-ahead 1
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 547
-34
+33
 1090
-598
+597
 20
 20
 13.0
@@ -136,8 +178,8 @@ GRAPHICS-WINDOW
 20
 -20
 20
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -260,6 +302,23 @@ BUTTON
 134
 NIL
 go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+263
+152
+380
+185
+Look for a job
+look_for_job
 T
 1
 T
