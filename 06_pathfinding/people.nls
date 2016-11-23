@@ -44,7 +44,14 @@ to people::find_job
 end
 
 to people::go_work  
-
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [shape = "triangle"])
+  let curent_distance distance? target
+  move-to one-of (patch-set f r l b) with [distance? target < curent_distance and distance? target != -1]
 end
 
 to people::go_home  
@@ -53,13 +60,9 @@ to people::go_home
   let l patch-left-and-ahead 90 1
   let b patch-right-and-ahead 180 1
   
-  move-to one-of (patch-set f r l b) with-min [
-    dist?
-  ]
-end
-
-to-report dist?
-  report matrix:get distances_matrix (pycor + (floor (world-height / 2))) (pxcor + (floor (world-width / 2)))
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [shape = "house"])
+  let curent_distance distance? target
+  move-to one-of (patch-set f r l b) with [distance? target < curent_distance and distance? target != -1]
 end
 
 to people::filter-neighbors

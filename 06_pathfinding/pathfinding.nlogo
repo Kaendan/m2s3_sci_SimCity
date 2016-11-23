@@ -52,13 +52,12 @@ to go
     ]
   ]
 
-  ask patches [ set plabel-color white set plabel dist ]
+  ;;ask patches [ set plabel-color white set plabel dist ]
   tick
 end
 
-to turtles::wiggle
-  set heading random 360
-  fd 1
+to-report distance? [agent]
+  report matrix:get [distances] of agent (pycor + (floor (world-height / 2))) (pxcor + (floor (world-width / 2)))
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -114,7 +113,7 @@ roads_min_generation
 roads_min_generation
 1
 10
-1
+3
 1
 1
 NIL
@@ -129,7 +128,7 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-0
+3
 1
 1
 NIL
@@ -190,7 +189,7 @@ CHOOSER
 tools
 tools
 "houses" "factories"
-0
+1
 
 MONITOR
 411

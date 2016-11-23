@@ -1,4 +1,7 @@
+extensions [matrix]
+
 breed [factories factory]
+factories-own [distances]
 
 to factories::add
   ask patch (round mouse-xcor) (round mouse-ycor) [
@@ -14,5 +17,6 @@ to factories::sprout
     ioda:init-agent
     set color red
     set shape "triangle"
+    compute_distances
   ]
 end
