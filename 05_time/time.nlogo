@@ -1,160 +1,57 @@
-breed [road_builders road_builder]
-road_builders-own [generation generation_max travelled_distance max_distance future_rotation]
+__includes ["../ioda/IODA_2_3.nls" "road_builders.nls" "people.nls" "houses.nls" "factories.nls"]
+extensions [ioda]
 
-breed [houses house]
-breed [people person]
-people-own [on_road]
+globals [
+  clock
+  time
+  game-started?
+]
 
-to set_first_road_builder
+to setup
   clear-all
-  reset-ticks
+
+  set clock 0
+  set time 0
+  set game-started? false
 
   ask patches [set pcolor green]
+  road_builders::set_first_road_builder
 
-   ;définit les limites de placement des road_builders sur le bord de l'environnement
-   let vertical_min floor (min-pycor + (world-height - 1) * division_ratio_min)
-   let vertical_max floor (min-pycor + (world-height - 1) * division_ratio_max)
-   let horizontal_min floor (min-pxcor + (world-width - 1) * division_ratio_min)
-   let horizontal_max floor (min-pxcor + (world-width - 1) * division_ratio_max)
+  ioda:load-interactions "interactions.txt"
+  ioda:load-matrices "matrix.txt" " "
+  ioda:setup
 
-   ;place un road_builder sur une case comprise entre les limites définies ci-dessus
-   ask one-of patches with [(pycor = min-pycor and horizontal_min <= pxcor and pxcor <= horizontal_max)
-     or (pxcor = min-pxcor and vertical_min <= pycor and pycor <= vertical_max)]
-   [
-     ;crée un road_builder
-     sprout-road_builders 1 [
-      ;modifie son orientation
-      ifelse pxcor = min-pxcor [
-       set heading 90
-      ][
-       set heading 0
-      ]
-      ;distance_max n'est pas utilisé pour l'instant
-      set max_distance -1
-      set travelled_distance 0
-      set generation 1
-      set generation_max roads_min_generation + random roads_generation_variation
-     ]
-   ]
-end
-
-to road_builder_update
-  ifelse pcolor = green [
-    set pcolor black
-    ifelse (can-move? 1 and [pcolor] of patch-ahead 1 = green) [
-      fd 1
-      set travelled_distance travelled_distance + 1
-    ][
-      divide
-    ]
-  ][
-    ifelse (travelled_distance < max_distance) [
-      fd 1
-      set travelled_distance travelled_distance + 1
-    ][
-      rt future_rotation
-      ifelse (can-move? 1 and [pcolor] of patch-ahead 1 = green) [
-        fd 1
-        set travelled_distance 1
-      ][
-        die
-      ]
-    ]
-  ]
-end
-
-to divide
-  rt 180
-  hatch_builder 90
-  hatch_builder -90
-  die
-end
-
-to hatch_builder [rotation]
-  let random_generation roads_min_generation + random roads_generation_variation
-  let future_max_distance floor (travelled_distance * division_ratio_min + random (travelled_distance * (division_ratio_max - division_ratio_min)))
-
-  if (generation + 1 <= random_generation and future_max_distance > 0) [
-    hatch 1 [
-      set future_rotation rotation
-      set max_distance future_max_distance
-      set travelled_distance 0
-      set generation generation + 1
-      set generation_max random_generation
-    ]
-  ]
+  reset-ticks
 end
 
 to go
-  if mouse-down? [
-    ask patch (round mouse-xcor) (round mouse-ycor) [
-      if pcolor = green and not any? turtles-here with [shape = "house"] and any? neighbors4 with [pcolor = black]
-        [
-         sprout_house
-        ]
+  if not pause [
+    ioda:go
+
+    if not any? road_builders [
+      set clock floor ((time mod 1000) * 24 / 1000)
     ]
-    tick
-  ]
-end
 
-to sprout_house
-  sprout-houses 1 [
-   set color red
-   set shape "house"
+    set time time + 1
   ]
 
-  sprout_person
-end
-
-to sprout_person
-  sprout-people 1 [
-   set heading 0
-   set color white
-   set shape "car"
-   hide-turtle
-   set on_road false
-   create-links-with (turtles-here with [shape = "house"])
-  ]
-end
-
-to look_for_job
-  ask people [
-    ifelse not on_road [
-      take_car
-      show-turtle
-      set on_road true
-    ] [
-      follow_road
+  if mouse-down? and not any? road_builders [
+    ifelse tools = "houses" [
+      houses::add
+    ]
+    [
+      if tools = "factories" [
+        factories::add
+      ]
     ]
   ]
+
   tick
 end
 
-to take_car
-  let f patch-ahead 1
-  let r patch-right-and-ahead 90 1
-  let l patch-left-and-ahead 90 1
-  let b patch-right-and-ahead 180 1
-
-  move-to one-of ((patch-set f r l b) with [pcolor = black])
-  if (patch-here = r) [right 90]
-  if (patch-here = l) [left 90]
-  if (patch-here = b) [rt 180]
-end
-
-to follow_road
-  let f patch-ahead 1
-  let r patch-right-and-ahead 90 1
-  let l patch-left-and-ahead 90 1
-
-  ifelse any? ((patch-set f r l) with [pcolor = black]) [
-      move-to one-of ((patch-set f r l) with [pcolor = black])
-      ifelse (patch-here = r) [right 90]
-      [ if (patch-here = l) [left 90] ]
-  ] [
-      rt 180
-      move-to patch-ahead 1
-  ]
+to turtles::wiggle
+  set heading random 360
+  fd 1
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -190,45 +87,11 @@ BUTTON
 229
 134
 setup
-ca\nset_first_road_builder
+setup
 NIL
 1
 T
 OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-59
-145
-217
-178
-create_road_step
-road_builder_update
-NIL
-1
-T
-TURTLE
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-59
-192
-186
-225
-create_roads
-road_builder_update
-T
-1
-T
-TURTLE
 NIL
 NIL
 NIL
@@ -244,7 +107,7 @@ roads_min_generation
 roads_min_generation
 1
 10
-3
+2
 1
 1
 NIL
@@ -259,47 +122,47 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-4
+0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-62
-331
-244
-364
+61
+297
+243
+330
 division_ratio_min
 division_ratio_min
 0
 1
-0.25
+0.5
 0.05
 1
 NIL
 HORIZONTAL
 
 SLIDER
-60
-363
-246
-396
+61
+331
+243
+364
 division_ratio_max
 division_ratio_max
 0
 1
-0.75
+0.5
 0.05
 1
 NIL
 HORIZONTAL
 
 BUTTON
-262
-101
-325
-134
+60
+140
+123
+173
 NIL
 go
 T
@@ -310,24 +173,39 @@ NIL
 NIL
 NIL
 NIL
-1
+0
 
-BUTTON
-263
-152
-380
-185
-Look for a job
-look_for_job
-T
+CHOOSER
+249
+101
+387
+146
+tools
+tools
+"houses" "factories"
+0
+
+MONITOR
+411
+100
+468
+145
+NIL
+clock
+17
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
+11
+
+SWITCH
+60
+178
+163
+211
+pause
+pause
+0
 1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

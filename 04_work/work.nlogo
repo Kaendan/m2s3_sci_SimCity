@@ -103,7 +103,7 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-2
+0
 1
 1
 NIL
@@ -154,7 +154,7 @@ NIL
 NIL
 NIL
 NIL
-1
+0
 
 CHOOSER
 249
@@ -164,7 +164,7 @@ CHOOSER
 tools
 tools
 "houses" "factories"
-0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -1,0 +1,23 @@
+interaction BuildRoad
+	actions build_road
+end
+
+interaction LeaveHouse
+	condition should_work? at_home?
+	actions take_car
+end
+
+interaction LeaveWork
+	condition not:should_work? at_work?
+	actions take_car
+end
+
+interaction LookForJob
+	condition should_work? in_car? not:have_job?
+	actions follow_road
+end
+
+interaction FindJob
+	condition should_work? in_car? not:have_job?
+	actions find_job
+end

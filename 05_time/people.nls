@@ -1,0 +1,71 @@
+breed [people person]
+
+to people::sprout
+  sprout-people 1 [
+    ioda:init-agent
+    set heading 0
+    hide-turtle
+    set color white
+    set shape "car"
+    create-links-with houses-here
+  ]
+end
+
+to people::take_car  
+  show-turtle
+  people::follow_road
+end
+
+to people::leave_car  
+  hide-turtle
+end
+
+to people::follow_road
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  
+  ifelse any? ((patch-set f r l) with [pcolor = black]) [
+    move-to one-of ((patch-set f r l) with [pcolor = black])
+    ifelse (patch-here = r) [right 90]
+    [ if (patch-here = l) [left 90] ]
+  ] [
+  rt 180
+  move-to patch-ahead 1
+  ]
+end
+
+to people::find_job  
+  move-to ioda:my-target
+  people::leave_car
+  create-link-with ioda:my-target
+end
+
+to people::filter-neighbors
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  ioda:filter-neighbors-on-patches (patch-set f r l b)
+end
+
+to-report people::in_car?
+  report pcolor = black
+end
+
+to-report people::at_home?
+  report any? houses-here
+end
+
+to-report people::at_work?
+  report any? factories-here
+end
+
+to-report people::should_work?
+  report clock >= 8 and clock < 18
+end
+
+to-report people::have_job?
+  report count my-links > 1
+end
