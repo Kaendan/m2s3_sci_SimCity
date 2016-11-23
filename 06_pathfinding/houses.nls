@@ -1,0 +1,44 @@
+extensions [matrix]
+
+breed [houses house]
+houses-own [distances]
+
+to houses::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       houses::sprout
+      ]
+  ]
+end
+
+to houses::sprout
+  sprout-houses 1 [
+    ioda:init-agent
+    set color red
+    set shape "house"
+    compute_distances
+  ]
+
+  people::sprout
+end
+
+to compute_distances
+  set distances matrix:from-row-list n-values world-width [n-values world-height [-1]]
+  
+  let p patch-set patch-here
+  let d 0
+  
+  while [ any? p ]
+  [ ask p 
+    [ set dist d 
+      let x pxcor + (floor (world-width / 2))
+      let y pycor + (floor (world-height / 2))
+      matrix:set distances_matrix y x d
+    ]
+    set d d + 1
+    set p (patch-set [ neighbors4 with [pcolor = black and (dist = -1) ]] of p)
+  ]
+
+  set distances distances_matrix
+end

@@ -1,0 +1,8 @@
+road_builders BuildRoad 0
+
+people LeaveHouse 0
+people LeaveWork 0
+people LookForJob 10
+people FindJob 20 factories 1
+people GoWork 0
+people GoHome 0

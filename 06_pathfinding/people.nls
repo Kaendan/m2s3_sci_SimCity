@@ -1,3 +1,5 @@
+extensions [matrix]
+
 breed [people person]
 
 to people::sprout
@@ -41,6 +43,25 @@ to people::find_job
   create-link-with ioda:my-target
 end
 
+to people::go_work  
+
+end
+
+to people::go_home  
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  move-to one-of (patch-set f r l b) with-min [
+    dist?
+  ]
+end
+
+to-report dist?
+  report matrix:get distances_matrix (pycor + (floor (world-height / 2))) (pxcor + (floor (world-width / 2)))
+end
+
 to people::filter-neighbors
   let f patch-ahead 1
   let r patch-right-and-ahead 90 1
@@ -63,9 +84,9 @@ to-report people::at_work?
 end
 
 to-report people::should_work?
-  report true
+  report clock >= 8 and clock < 18
 end
 
 to-report people::have_job?
-  report count my-links = 2
+  report count my-links > 1
 end
