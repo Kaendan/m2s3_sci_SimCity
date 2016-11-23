@@ -60,7 +60,7 @@ to people::go_home
   let l patch-left-and-ahead 90 1
   let b patch-right-and-ahead 180 1
   
-  let target one-of ((turtle-set ([other-end] of (my-links))) with [shape = "house"])
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = "houses"])
   let curent_distance distance? target
   move-to one-of (patch-set f r l b) with [distance? target < curent_distance and distance? target != -1]
 end
