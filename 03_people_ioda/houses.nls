@@ -1,0 +1,22 @@
+breed [houses house]
+
+to houses::add_house
+  if mouse-down? [
+    ask patch (round mouse-xcor) (round mouse-ycor) [
+      if pcolor = green and not any? turtles-here with [shape = "house"] and any? neighbors4 with [pcolor = black]
+        [
+         houses::sprout_house
+        ]
+    ]
+  ]
+end
+
+to houses::sprout_house
+  sprout-houses 1 [
+   set color red
+   set shape "house"
+   ioda:set-alive true
+  ]
+
+  people::sprout_person
+end

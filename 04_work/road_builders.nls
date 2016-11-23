@@ -1,0 +1,78 @@
+breed [road_builders road_builder]
+road_builders-own [generation generation_max travelled_distance max_distance future_rotation]
+
+to road_builders::set_first_road_builder
+   ;définit les limites de placement des road_builders sur le bord de l'environnement
+   let vertical_min floor (min-pycor + (world-height - 1) * division_ratio_min)
+   let vertical_max floor (min-pycor + (world-height - 1) * division_ratio_max)
+   let horizontal_min floor (min-pxcor + (world-width - 1) * division_ratio_min)
+   let horizontal_max floor (min-pxcor + (world-width - 1) * division_ratio_max)
+
+   ;place un road_builder sur une case comprise entre les limites définies ci-dessus
+   ask one-of patches with [(pycor = min-pycor and horizontal_min <= pxcor and pxcor <= horizontal_max)
+     or (pxcor = min-pxcor and vertical_min <= pycor and pycor <= vertical_max)]
+   [
+     ;crée un road_builder
+     sprout-road_builders 1 [
+      ;modifie son orientation
+      ifelse pxcor = min-pxcor [
+       set heading 90
+      ][
+       set heading 0
+      ]
+      set color red
+      ;distance_max n'est pas utilisé pour l'instant
+      set max_distance -1
+      set travelled_distance 0
+      set generation 1
+      set generation_max roads_min_generation + random roads_generation_variation
+     ]
+   ]
+end
+
+to road_builders::build_road
+  ifelse pcolor = green [
+    set pcolor black
+    ifelse (can-move? 1 and [pcolor] of patch-ahead 1 = green) [
+      fd 1
+      set travelled_distance travelled_distance + 1
+    ][
+      road_builders::divide
+    ]
+  ][
+    ifelse (travelled_distance < max_distance) [
+      fd 1
+      set travelled_distance travelled_distance + 1
+    ][
+      rt future_rotation
+      ifelse (can-move? 1 and [pcolor] of patch-ahead 1 = green) [
+        fd 1
+        set travelled_distance 1
+      ][
+        ioda:die
+      ]
+    ]
+  ]
+end
+
+to road_builders::divide
+  rt 180
+  road_builders::hatch_builder 90
+  road_builders::hatch_builder -90
+  ioda:die
+end
+
+to road_builders::hatch_builder [rotation]
+  let random_generation roads_min_generation + random roads_generation_variation
+  let future_max_distance floor (travelled_distance * division_ratio_min + random (travelled_distance * (division_ratio_max - division_ratio_min)))
+
+  if (generation + 1 <= random_generation and future_max_distance > 0) [
+    hatch 1 [
+      set future_rotation rotation
+      set max_distance future_max_distance
+      set travelled_distance 0
+      set generation generation + 1
+      set generation_max random_generation
+    ]
+  ]
+end

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Extension-Name: ioda
+Class-Manager: fr.lifl.ioda.IodaExtension
+NetLogo-Extension-API-Version: 5.0

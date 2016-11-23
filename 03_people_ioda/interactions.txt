@@ -1,0 +1,7 @@
+interaction BuildRoad
+	actions build_road
+end
+
+interaction LookForJob
+	actions look_for_job
+end

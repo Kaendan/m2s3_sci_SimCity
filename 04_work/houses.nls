@@ -1,0 +1,20 @@
+breed [houses house]
+
+to houses::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       houses::sprout
+      ]
+  ]
+end
+
+to houses::sprout
+  sprout-houses 1 [
+    ioda:init-agent
+    set color red
+    set shape "house"
+  ]
+
+  people::sprout
+end

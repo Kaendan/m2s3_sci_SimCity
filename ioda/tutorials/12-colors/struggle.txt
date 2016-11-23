@@ -1,0 +1,44 @@
+; This file can be used to define your own interaction
+; matrix and update matrix.
+; SYNTAX:
+; <source> <interaction> <priority>
+; OR: <source> <interaction> <priority> UPDATE
+; OR: <source> <interaction> <priority> <target> <distance> [<target-selection-policy>]
+;
+; By default, each line is added to the appropriate matrix.
+; Lines starting with a '-' character are removed from the appropriate matrix.
+; Lines starting with a '+' character are added to the appropriate matrix ('+' is optional).
+;
+; NB1: this file is read as a CSV file, thus you can use any field separator char 
+; since you put it in the second argument of the ioda:load-matrices command.
+;
+; NB2: any non-letter, non-digit, non '+'/'-' character at the beginning
+; of the line introduces a comment line. Empty lines are ignored.
+;
+
+; interactions performed by blue agents
+azure	       Wander	    	0	
+azure	       CloneRandomly    10	silver 	1
+azure	       KillSource    	20	azure 	1	NUMBER:7-
+azure	       KillSource    	30	gules 	1	NUMBER:5-
+
+; interactions performed by white agents
+silver	       Wander	    	0 	
+silver	       CloneRandomly   	10 	azure 	1
+silver	       KillTarget	20	silver 	2
+silver	       KillTarget	30	gules 	1
+silver	       KillTarget	30	gold 	1
+
+; interactions performed by red agents
+gules	       Wander	    	0
+gules	       CloneRandomly	10 	gold	1
+gules	       KillSource	20	gules	1	NUMBER:7-
+gules	       KillSource    	30	azure 	1	NUMBER:5-
+
+; interactions performed by yellow agents
+gold	       Wander	    	0
+gold	       CloneRandomly	10 	gules 	1	
+gold	       KillTarget	20 	gold   	2	
+gold	       KillTarget	30 	azure   1
+gold	       KillTarget	30 	silver   1
+

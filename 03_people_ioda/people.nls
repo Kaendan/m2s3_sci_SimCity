@@ -1,0 +1,51 @@
+breed [people person]
+people-own [on_road]
+
+to people::sprout_person
+  sprout-people 1 [
+    set heading 0
+    set color white
+    set shape "car"
+    hide-turtle
+    set on_road false
+    create-links-with (turtles-here with [shape = "house"])
+    ioda:set-alive true
+  ]
+end
+
+to people::look_for_job
+  ifelse not on_road [
+    people::take_car
+    show-turtle
+    set on_road true
+  ] [
+    people::follow_road
+  ]
+end
+
+to people::take_car
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+
+  move-to one-of ((patch-set f r l b) with [pcolor = black])
+  if (patch-here = r) [right 90]
+  if (patch-here = l) [left 90]
+  if (patch-here = b) [rt 180]
+end
+
+to people::follow_road
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+
+  ifelse any? ((patch-set f r l) with [pcolor = black]) [
+      move-to one-of ((patch-set f r l) with [pcolor = black])
+      ifelse (patch-here = r) [right 90]
+      [ if (patch-here = l) [left 90] ]
+  ] [
+      rt 180
+      move-to patch-ahead 1
+  ]
+end
