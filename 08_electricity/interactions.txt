@@ -1,0 +1,67 @@
+interaction BuildRoad
+	actions build_road
+end
+
+interaction LeaveHouse
+	condition should_work? at_home?
+	actions take_car
+end
+
+interaction LeaveWork
+	condition not:should_work? at_work?
+	actions take_car
+end
+
+interaction LookForJob
+	condition should_work? in_car? not:have_job?
+	actions follow_road
+end
+
+interaction FindJob
+	condition should_work? in_car? not:have_job? not:target_full?
+	actions find_job
+end
+
+interaction GoWork
+	condition should_work? in_car? have_job?
+	actions go_work
+end
+
+interaction GoHome
+	condition not:should_work? in_car?
+	actions go_home
+end
+
+interaction FollowRoad
+	actions follow_road
+end
+
+interaction FindWater
+	condition not:full_water?
+	actions find_water
+end
+
+interaction FindElectricity
+	condition not:full_electricity?
+	actions find_electricity
+end
+
+interaction Produce
+	condition should_produce?
+	actions produce
+end
+
+interaction Consume
+	condition should_consume? not:empty_water? not:empty_electricity?
+	actions consume
+end
+
+interaction UpdateUnemployment
+	condition still_enemployed?
+	actions update_unemployment
+end
+
+interaction Die
+	condition should_die?
+	actions die
+end

@@ -1,0 +1,22 @@
+road_builders BuildRoad 0
+
+people LeaveHouse 0
+people LeaveWork 0
+people LookForJob 10
+people FindJob 20 factories 1
+people GoWork 0
+people GoHome 0
+people UpdateUnemployment 40
+people Die 50
+
+houses FindWater 0 waters 1
+houses FindElectricity 0 electricities 1
+houses Consume 20
+
+waters FollowRoad 0
+
+water_towers Produce 0
+
+electricities FollowRoad 0
+
+power_plants Produce 0

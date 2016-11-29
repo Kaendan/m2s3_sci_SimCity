@@ -1,0 +1,28 @@
+extensions [matrix]
+
+breed [factories factory]
+factories-own [distances limit nb_people]
+
+to factories::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       factories::sprout
+      ]
+  ]
+end
+
+to factories::sprout
+  sprout-factories 1 [
+    ioda:init-agent
+    set color orange
+    set shape "triangle"
+    set limit factory_limit
+    set nb_people 0
+    compute_distances
+  ]
+end
+
+to-report factories::full?
+  report nb_people >= limit
+end

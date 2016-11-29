@@ -1,0 +1,138 @@
+extensions [matrix]
+
+breed [people person]
+people-own [happiness unemployment_time]
+
+to people::sprout
+  sprout-people 1 [
+    ioda:init-agent
+    set heading 0
+    hide-turtle
+    set color white
+    set shape "car"
+    create-links-with houses-here
+    
+    let my_water [nb_water] of one-of houses-here
+    let my_electricity [nb_electricity] of one-of houses-here
+    let my_job unemployment_max_time - unemployment_time
+    set happiness (my_water * my_electricity * my_job)
+  ]
+end
+
+to people::take_car  
+  show-turtle
+  people::follow_road
+end
+
+to people::leave_car  
+  hide-turtle
+end
+
+to people::follow_road
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  
+  ifelse any? ((patch-set f r l) with [pcolor = black]) [
+    move-to one-of ((patch-set f r l) with [pcolor = black])
+    ifelse (patch-here = r) [right 90]
+    [ if (patch-here = l) [left 90] ]
+  ] [
+  rt 180
+  move-to patch-ahead 1
+  ]
+end
+
+to people::find_job  
+  move-to ioda:my-target
+  people::leave_car
+  create-link-with ioda:my-target
+  set color orange
+  ask ioda:my-target [set nb_people nb_people + 1]
+end
+
+to people::go_work    
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
+  go_to target
+end
+
+to people::go_home
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
+  go_to target 
+end
+
+to go_to [target]
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  let current_distance distance? target
+  move-to one-of (patch-set f r l b) with [distance? target < current_distance and distance? target != -1]
+  
+  if current_distance = 1 [
+    people::leave_car 
+  ]
+end
+
+to people::filter-neighbors
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  ioda:filter-neighbors-on-patches (patch-set f r l b)
+end
+
+to people::update_unemployment
+  set unemployment_time unemployment_time + 1
+end
+
+to people::die
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
+  ask target [set color gray]
+  ioda:die
+end
+
+to-report people::in_car?
+  report pcolor = black
+end
+
+to-report people::at_home?
+  report any? houses-here
+end
+
+to-report people::at_work?
+  report any? factories-here
+end
+
+to-report people::target_full?
+  report [factories::full?] of ioda:my-target 
+end
+
+to-report people::should_work?
+  report clock >= 8 and clock < 18
+end
+
+to-report people::have_job?
+  report any? ((turtle-set ([other-end] of (my-links))) with [breed = factories])
+end
+
+to-report people::still_enemployed?
+  report not people::have_job? and midnight?
+end
+
+to-report people::should_die?
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
+  let my_water [nb_water] of target
+  let my_electricity [nb_electricity] of target
+  let my_job 0
+  
+  if (unemployment_max_time - unemployment_time) > 0 [
+    set my_job 1
+  ]
+  
+  set happiness (my_water * my_electricity * my_job)
+
+  report happiness <= 0
+end

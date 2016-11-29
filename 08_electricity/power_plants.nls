@@ -1,0 +1,30 @@
+extensions [matrix]
+
+breed [power_plants power_plant]
+power_plants-own [distances]
+
+to power_plants::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       power_plants::sprout
+      ]
+  ]
+end
+
+to power_plants::sprout
+  sprout-power_plants 1 [
+    ioda:init-agent
+    set color yellow
+    set shape "star"
+    compute_distances
+  ]
+end
+
+to power_plants::produce
+  ask patch-here [electricities::sprout electricity_per_day]
+end
+
+to-report power_plants::should_produce?
+  report midnight?
+end
