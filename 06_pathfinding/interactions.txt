@@ -18,7 +18,7 @@ interaction LookForJob
 end
 
 interaction FindJob
-	condition should_work? in_car? not:have_job?
+	condition should_work? in_car? not:have_job? not:target_full?
 	actions find_job
 end
 

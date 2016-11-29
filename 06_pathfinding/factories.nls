@@ -1,7 +1,7 @@
 extensions [matrix]
 
 breed [factories factory]
-factories-own [distances]
+factories-own [distances limit nb_people]
 
 to factories::add
   ask patch (round mouse-xcor) (round mouse-ycor) [
@@ -15,8 +15,14 @@ end
 to factories::sprout
   sprout-factories 1 [
     ioda:init-agent
-    set color red
+    set color yellow
     set shape "triangle"
+    set limit factory_limit
+    set nb_people 0
     compute_distances
   ]
+end
+
+to-report factories::full?
+  report nb_people >= limit
 end

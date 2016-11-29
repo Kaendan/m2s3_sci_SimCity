@@ -41,28 +41,31 @@ to people::find_job
   move-to ioda:my-target
   people::leave_car
   create-link-with ioda:my-target
+  ask ioda:my-target [set nb_people nb_people + 1]
 end
 
-to people::go_work  
+to people::go_work    
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
+  go_to target
+end
+
+to people::go_home
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
+  go_to target 
+end
+
+to go_to [target]
   let f patch-ahead 1
   let r patch-right-and-ahead 90 1
   let l patch-left-and-ahead 90 1
   let b patch-right-and-ahead 180 1
   
-  let target one-of ((turtle-set ([other-end] of (my-links))) with [shape = "triangle"])
-  let curent_distance distance? target
-  move-to one-of (patch-set f r l b) with [distance? target < curent_distance and distance? target != -1]
-end
-
-to people::go_home  
-  let f patch-ahead 1
-  let r patch-right-and-ahead 90 1
-  let l patch-left-and-ahead 90 1
-  let b patch-right-and-ahead 180 1
+  let current_distance distance? target
+  move-to one-of (patch-set f r l b) with [distance? target < current_distance and distance? target != -1]
   
-  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = "houses"])
-  let curent_distance distance? target
-  move-to one-of (patch-set f r l b) with [distance? target < curent_distance and distance? target != -1]
+  if current_distance = 1 [
+    people::leave_car 
+  ]
 end
 
 to people::filter-neighbors
@@ -86,10 +89,14 @@ to-report people::at_work?
   report any? factories-here
 end
 
+to-report people::target_full?
+  report [factories::full?] of ioda:my-target 
+end
+
 to-report people::should_work?
   report clock >= 8 and clock < 18
 end
 
 to-report people::have_job?
-  report count my-links > 1
+  report any? ((turtle-set ([other-end] of (my-links))) with [breed = factories])
 end

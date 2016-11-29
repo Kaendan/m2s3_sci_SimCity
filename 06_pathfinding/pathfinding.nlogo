@@ -5,10 +5,7 @@ globals [
   clock
   time
   game-started?
-  distances_matrix
 ]
-
-patches-own [dist]
 
 to setup
   clear-all
@@ -39,8 +36,6 @@ to go
   ]
 
   if mouse-down? and not any? road_builders [
-    ask patches [set dist -1 ]
-    set distances_matrix matrix:from-row-list n-values world-width [n-values world-height [-1]]
 
     ifelse tools = "houses" [
       houses::add
@@ -56,8 +51,33 @@ to go
   tick
 end
 
+to compute_distances
+  set distances matrix:from-row-list n-values world-width [n-values world-height [-1]]
+  let temp_matrix matrix:from-row-list n-values world-width [n-values world-height [-1]]
+
+  let p patch-set patch-here
+  let d 0
+
+  while [ any? p ]
+  [ ask p
+    [
+      let x pxcor + (floor (world-width / 2))
+      let y pycor + (floor (world-height / 2))
+      matrix:set temp_matrix y x d
+    ]
+    set d d + 1
+    set p (patch-set [ neighbors4 with [pcolor = black and ((temp_distance? temp_matrix pxcor pycor) = -1) ]] of p)
+  ]
+
+  set distances temp_matrix
+end
+
 to-report distance? [agent]
   report matrix:get [distances] of agent (pycor + (floor (world-height / 2))) (pxcor + (floor (world-width / 2)))
+end
+
+to-report temp_distance? [matrix x y]
+  report matrix:get matrix (y + (floor (world-height / 2))) (x + (floor (world-width / 2)))
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -143,22 +163,22 @@ division_ratio_min
 division_ratio_min
 0
 1
-0.5
+0.4
 0.05
 1
 NIL
 HORIZONTAL
 
 SLIDER
-61
-331
-243
-364
+244
+297
+426
+330
 division_ratio_max
 division_ratio_max
 0
 1
-0.5
+0.6
 0.05
 1
 NIL
@@ -189,7 +209,7 @@ CHOOSER
 tools
 tools
 "houses" "factories"
-1
+0
 
 MONITOR
 411
@@ -212,6 +232,55 @@ pause
 1
 1
 -1000
+
+SLIDER
+61
+347
+233
+380
+factory_limit
+factory_limit
+0
+100
+100
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+173
+159
+331
+192
+show links
+ask links [show-link]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+203
+195
+293
+228
+hide links
+ask links [hide-link]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
