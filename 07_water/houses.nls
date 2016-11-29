@@ -1,0 +1,53 @@
+extensions [matrix]
+
+breed [houses house]
+houses-own [distances limit nb_water]
+
+to houses::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       houses::sprout
+      ]
+  ]
+end
+
+to houses::sprout
+  sprout-houses 1 [
+    ioda:init-agent
+    set color red
+    set shape "house"
+    set limit water_limit
+    set nb_water water_start
+    compute_distances
+  ]
+
+  people::sprout
+end
+
+to houses::find_water
+  set nb_water nb_water + 1
+  ask ioda:my-target [ioda:die]
+end
+
+to houses::filter-neighbors
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  ioda:filter-neighbors-on-patches (patch-set f r l b)
+end
+
+to-report houses::full_water?
+  print nb_water >= limit
+  report nb_water >= limit
+end
+
+to houses::consume
+  set nb_water nb_water - 1
+end
+
+to-report houses::should_consume?
+  report midnight?
+end
