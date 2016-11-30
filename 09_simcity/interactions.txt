@@ -56,9 +56,9 @@ interaction Consume
 	actions consume
 end
 
-interaction UpdateUnemployment
-	condition still_enemployed?
-	actions update_unemployment
+interaction Update
+	condition should_update?
+	actions update
 end
 
 interaction Die

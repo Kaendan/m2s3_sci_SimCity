@@ -6,7 +6,7 @@ people LookForJob 10
 people FindJob 20 factories 1
 people GoWork 0
 people GoHome 0
-people UpdateUnemployment 40
+people Update 40
 people Die 50
 
 houses FindWater 0 waters 1

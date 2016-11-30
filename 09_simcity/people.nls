@@ -1,10 +1,10 @@
 extensions [matrix]
 
 breed [people person]
-people-own [happiness unemployment_time]
+people-own [happiness unemployment_time unhappy_time]
 
-to people::sprout
-  sprout-people 1 [
+to people::sprout [nb]
+  sprout-people nb [
     ioda:init-agent
     set heading 0
     hide-turtle
@@ -17,6 +17,7 @@ to people::sprout
     ]
     
     set unemployment_time 0
+    set unhappy_time 0
     
     let my_water [nb_water] of one-of houses-here
     let my_electricity [nb_electricity] of one-of houses-here
@@ -101,13 +102,41 @@ to people::filter-neighbors
   ioda:filter-neighbors-on-patches (patch-set f r l b)
 end
 
-to people::update_unemployment
-  set unemployment_time unemployment_time + 1
+to people::update
+  if not people::have_job? [
+    set unemployment_time unemployment_time + 1
+  ]
+  
+  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
+  let my_water [nb_water] of target
+  let my_electricity [nb_electricity] of target
+  let my_job 0
+  
+  if (unemployment_max_time - unemployment_time) > 0 [
+    set my_job 1
+  ]
+  
+  set happiness (my_water * my_electricity * my_job)
+  
+  ifelse (happiness <= 0) [
+    set unhappy_time unhappy_time + 1
+    set color red
+  ]
+  [
+    set unhappy_time 0
+    set color white
+  ]
 end
 
 to people::die
   let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
-  ask target [set color gray]
+  ask target [
+    let nb_habitants (count (turtle-set ([other-end] of (my-links)))) - 1
+    if nb_habitants <= 0 [
+      set color gray
+    ]
+  ]
+  ask my-links [die]
   ioda:die
 end
 
@@ -135,21 +164,10 @@ to-report people::have_job?
   report any? ((turtle-set ([other-end] of (my-links))) with [breed = factories])
 end
 
-to-report people::still_enemployed?
-  report not people::have_job? and midnight?
+to-report people::should_update?
+  report midnight?
 end
 
 to-report people::should_die?
-  let target one-of ((turtle-set ([other-end] of (my-links))) with [breed = houses])
-  let my_water [nb_water] of target
-  let my_electricity [nb_electricity] of target
-  let my_job 0
-  
-  if (unemployment_max_time - unemployment_time) > 0 [
-    set my_job 1
-  ]
-  
-  set happiness (my_water * my_electricity * my_job)
-
-  report happiness <= 0
+  report unhappy_time > unhappy_max_time
 end

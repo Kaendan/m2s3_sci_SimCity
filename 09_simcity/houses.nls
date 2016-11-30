@@ -23,7 +23,7 @@ to houses::sprout
     set nb_electricity electricity_start
   ]
 
-  people::sprout
+  people::sprout people_per_house
 end
 
 to houses::find_water
