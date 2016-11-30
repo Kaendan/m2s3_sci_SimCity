@@ -8,6 +8,10 @@ to electricities::sprout [nb]
     set heading 0
     set color yellow
     set shape "circle"
+    
+    if not show_resources [
+     hide-turtle
+    ]
   ]
 end
 

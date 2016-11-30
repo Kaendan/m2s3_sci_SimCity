@@ -6,6 +6,7 @@ globals [
   time
   game-started?
   visible_links
+  visible_resources
 ]
 
 to setup
@@ -15,6 +16,7 @@ to setup
   set time 0
   set game-started? false
   set visible_links show_links
+  set visible_resources show_resources
 
   ask patches [set pcolor green]
   road_builders::set_first_road_builder
@@ -67,6 +69,18 @@ to go
        ask  links [hide-link]
      ]
      set visible_links show_links
+  ]
+
+  if visible_resources != show_resources [
+     ifelse show_resources [
+       ask  waters [show-turtle]
+       ask  electricities [show-turtle]
+     ]
+     [
+       ask  waters [hide-turtle]
+       ask  electricities [hide-turtle]
+     ]
+     set visible_resources show_resources
   ]
 
   ;;ask patches [ set plabel-color white set plabel dist ]
@@ -235,7 +249,7 @@ CHOOSER
 tools
 tools
 "houses" "factories" "water_towers" "power_plants"
-0
+2
 
 MONITOR
 368
@@ -387,6 +401,17 @@ SWITCH
 show_links
 show_links
 0
+1
+-1000
+
+SWITCH
+277
+115
+435
+148
+show_resources
+show_resources
+1
 1
 -1000
 

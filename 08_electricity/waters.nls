@@ -8,6 +8,10 @@ to waters::sprout [nb]
     set heading 0
     set color blue
     set shape "circle"
+    
+    if not show_resources [
+     hide-turtle
+    ]
   ]
 end
 
