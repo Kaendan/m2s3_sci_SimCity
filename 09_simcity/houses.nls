@@ -1,0 +1,77 @@
+extensions [matrix]
+
+breed [houses house]
+houses-own [distances nb_water nb_electricity]
+
+to houses::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       houses::sprout
+      ]
+  ]
+end
+
+to houses::sprout
+  sprout-houses 1 [
+    ioda:init-agent
+    set color red
+    set shape "house"
+    compute_distances
+    
+    set nb_water water_start
+    set nb_electricity electricity_start
+  ]
+
+  people::sprout
+end
+
+to houses::find_water
+  set nb_water nb_water + 1
+  ask ioda:my-target [ioda:die]
+end
+
+to houses::find_electricity
+  set nb_electricity nb_electricity + 1
+  ask ioda:my-target [ioda:die]
+end
+
+to houses::filter-neighbors
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  ioda:filter-neighbors-on-patches (patch-set f r l b)
+end
+
+to-report houses::full_water?
+  report (nb_water >= water_limit) or (nb_water <= 0)
+end
+
+to-report houses::full_electricity?
+  report (nb_electricity >= electricity_limit) or (nb_electricity <= 0)
+end
+
+to-report houses::empty_water?
+  report nb_water <= 0
+end
+
+to-report houses::empty_electricity?
+  report nb_electricity <= 0
+end
+
+to houses::consume
+  set nb_water nb_water - 1
+  set nb_electricity nb_electricity - 1
+end
+
+to-report houses::should_consume?
+  report midnight?
+end
+
+to houses::destroy
+  ask (turtle-set ([other-end] of (my-links))) [ioda:die]
+  ask my-links [die]
+  ioda:die
+end

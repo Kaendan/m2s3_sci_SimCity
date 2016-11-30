@@ -1,0 +1,40 @@
+extensions [matrix]
+
+breed [electricities electricity]
+
+to electricities::sprout [nb]
+  sprout-electricities nb [
+    ioda:init-agent
+    set heading 0
+    set color yellow
+    set shape "circle"
+    
+    if not show_resources [
+     hide-turtle
+    ]
+  ]
+end
+
+to electricities::follow_road
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  
+  ifelse any? ((patch-set f r l) with [pcolor = black]) [
+    move-to one-of ((patch-set f r l) with [pcolor = black])
+    ifelse (patch-here = r) [right 90]
+    [ if (patch-here = l) [left 90] ]
+  ] [
+  rt 180
+  move-to patch-ahead 1
+  ]
+end
+
+to electricities::filter-neighbors
+  let f patch-ahead 1
+  let r patch-right-and-ahead 90 1
+  let l patch-left-and-ahead 90 1
+  let b patch-right-and-ahead 180 1
+  
+  ioda:filter-neighbors-on-patches (patch-set f r l b)
+end

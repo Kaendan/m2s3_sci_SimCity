@@ -1,0 +1,30 @@
+extensions [matrix]
+
+breed [water_towers water_tower]
+water_towers-own [distances]
+
+to water_towers::add
+  ask patch (round mouse-xcor) (round mouse-ycor) [
+    if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
+      [
+       water_towers::sprout
+      ]
+  ]
+end
+
+to water_towers::sprout
+  sprout-water_towers 1 [
+    ioda:init-agent
+    set color blue
+    set shape "square"
+    compute_distances
+  ]
+end
+
+to water_towers::produce
+  ask patch-here [waters::sprout water_per_day]
+end
+
+to-report water_towers::should_produce?
+  report midnight?
+end
