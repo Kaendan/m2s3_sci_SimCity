@@ -12,6 +12,10 @@ to people::sprout
     set shape "car"
     create-links-with houses-here
     
+    if not show_links [
+     ask  my-links [hide-link]
+    ]
+    
     let my_water [nb_water] of one-of houses-here
     let my_electricity [nb_electricity] of one-of houses-here
     let my_job unemployment_max_time - unemployment_time
@@ -47,6 +51,11 @@ to people::find_job
   move-to ioda:my-target
   people::leave_car
   create-link-with ioda:my-target
+  
+  if not show_links [
+   ask  my-links [hide-link]
+  ]
+  
   set color orange
   ask ioda:my-target [set nb_people nb_people + 1]
 end

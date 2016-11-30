@@ -5,6 +5,7 @@ globals [
   clock
   time
   game-started?
+  visible_links
 ]
 
 to setup
@@ -13,6 +14,7 @@ to setup
   set clock 0
   set time 0
   set game-started? false
+  set visible_links show_links
 
   ask patches [set pcolor green]
   road_builders::set_first_road_builder
@@ -55,6 +57,16 @@ to go
       ]
       ]
     ]
+  ]
+
+  if visible_links != show_links [
+     ifelse show_links [
+       ask  links [show-link]
+     ]
+     [
+       ask  links [hide-link]
+     ]
+     set visible_links show_links
   ]
 
   ;;ask patches [ set plabel-color white set plabel dist ]
@@ -262,40 +274,6 @@ factory_limit
 NIL
 HORIZONTAL
 
-BUTTON
-130
-96
-288
-129
-show links
-ask links [show-link]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-160
-132
-250
-165
-hide links
-ask links [hide-link]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 SLIDER
 18
 319
@@ -335,7 +313,7 @@ water_start
 water_start
 0
 100
-4
+6
 1
 1
 NIL
@@ -400,6 +378,17 @@ electricity_per_day
 1
 NIL
 HORIZONTAL
+
+SWITCH
+137
+115
+262
+148
+show_links
+show_links
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
