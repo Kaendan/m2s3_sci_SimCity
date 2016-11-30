@@ -136,12 +136,16 @@ end
 to-report midnight?
   report ((time mod 1000) * 24 / 1000) = 0
 end
+
+to power_plants::destroy
+  ioda:die
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
-506
-35
-1049
-599
+475
+11
+1018
+575
 20
 20
 13.0
@@ -165,10 +169,10 @@ ticks
 30.0
 
 BUTTON
-16
-38
-186
-71
+2
+15
+172
+48
 setup
 setup
 NIL
@@ -182,40 +186,40 @@ NIL
 1
 
 SLIDER
-18
-200
-226
-233
+4
+177
+212
+210
 roads_min_generation
 roads_min_generation
 1
 10
-1
+3
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-227
-200
-481
-233
+213
+177
+467
+210
 roads_generation_variation
 roads_generation_variation
 0
 10
-0
+3
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-18
-234
-200
-267
+4
+211
+186
+244
 division_ratio_min
 division_ratio_min
 0
@@ -227,10 +231,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-201
-234
-383
-267
+187
+211
+369
+244
 division_ratio_max
 division_ratio_max
 0
@@ -242,10 +246,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-17
-77
-80
-110
+3
+54
+66
+87
 NIL
 go
 T
@@ -259,20 +263,20 @@ NIL
 0
 
 CHOOSER
-206
-38
-344
-83
+192
+15
+330
+60
 tools
 tools
 "houses" "factories" "water_towers" "power_plants" "delete"
 0
 
 MONITOR
-368
-37
-425
-82
+354
+14
+411
+59
 NIL
 clock
 17
@@ -280,10 +284,10 @@ clock
 11
 
 SWITCH
-17
-115
-120
-148
+3
+92
+106
+125
 pause
 pause
 1
@@ -291,10 +295,10 @@ pause
 -1000
 
 SLIDER
-18
-284
-190
-317
+4
+261
+176
+294
 factory_limit
 factory_limit
 0
@@ -306,10 +310,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-18
-319
-190
-352
+4
+296
+176
+329
 water_limit
 water_limit
 0
@@ -321,10 +325,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-18
-450
-190
-483
+4
+427
+176
+460
 water_per_day
 water_per_day
 0
@@ -336,10 +340,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-192
-319
-364
-352
+178
+296
+350
+329
 water_start
 water_start
 0
@@ -351,10 +355,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-17
-396
-229
-429
+3
+373
+215
+406
 unemployment_max_time
 unemployment_max_time
 0
@@ -366,10 +370,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-18
-353
-190
-386
+4
+330
+176
+363
 electricity_limit
 electricity_limit
 0
@@ -381,10 +385,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-192
-353
-364
-386
+178
+330
+350
+363
 electricity_start
 electricity_start
 0
@@ -396,10 +400,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-19
-487
-191
-520
+5
+464
+177
+497
 electricity_per_day
 electricity_per_day
 0
@@ -411,26 +415,153 @@ NIL
 HORIZONTAL
 
 SWITCH
-137
-115
-262
-148
+123
+92
+248
+125
 show_links
 show_links
-0
+1
 1
 -1000
 
 SWITCH
-277
-115
-435
-148
+263
+92
+421
+125
 show_resources
 show_resources
 1
 1
 -1000
+
+MONITOR
+1024
+10
+1106
+55
+NB Houses
+count houses
+17
+1
+11
+
+MONITOR
+1024
+57
+1113
+102
+NB Factories
+count factories
+17
+1
+11
+
+MONITOR
+1024
+104
+1140
+149
+NB Water Towers
+count water_towers
+17
+1
+11
+
+MONITOR
+1024
+151
+1134
+196
+NB Power Plants
+count power_plants
+17
+1
+11
+
+MONITOR
+1142
+104
+1209
+149
+NB Water
+count waters
+17
+1
+11
+
+MONITOR
+1136
+151
+1229
+196
+NB Electricity
+count electricities
+17
+1
+11
+
+MONITOR
+1026
+237
+1105
+282
+Employees
+count people with [people::have_job?]
+17
+1
+11
+
+MONITOR
+1109
+10
+1182
+55
+NB People
+count people
+17
+1
+11
+
+MONITOR
+1109
+237
+1242
+282
+Unemployed Persons
+count people with [not people::have_job?]
+17
+1
+11
+
+MONITOR
+1026
+287
+1132
+332
+Unemployment
+round ((count (people with [not people::have_job?])) * 100 / (count people))
+17
+1
+11
+
+BUTTON
+3
+128
+164
+161
+Delete Empty Houses
+ask (houses with [color = gray]) [ioda:die]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

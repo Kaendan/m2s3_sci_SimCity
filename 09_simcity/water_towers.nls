@@ -28,3 +28,7 @@ end
 to-report water_towers::should_produce?
   report midnight?
 end
+
+to water_towers::destroy
+  ioda:die
+end
