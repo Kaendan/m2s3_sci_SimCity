@@ -26,5 +26,5 @@ to power_plants::produce
 end
 
 to-report power_plants::should_produce?
-  report midnight?
+  report elevenPM?
 end

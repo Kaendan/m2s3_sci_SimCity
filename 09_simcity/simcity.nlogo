@@ -33,7 +33,7 @@ to go
     ioda:go
 
     if not any? road_builders [
-      set clock floor ((time mod 1000) * 24 / 1000)
+      set clock floor ((time mod 1008) * 24 / 1008)
     ]
 
     set time time + 1
@@ -133,8 +133,12 @@ to-report temp_distance? [matrix x y]
   report matrix:get matrix (y + (floor (world-height / 2))) (x + (floor (world-width / 2)))
 end
 
-to-report midnight?
-  report ((time mod 1000) * 24 / 1000) = 0
+to-report tenPM?
+  report ((time mod 1008) * 24 / 1008) = 22
+end
+
+to-report elevenPM?
+  report ((time mod 1008) * 24 / 1008) = 23
 end
 
 to power_plants::destroy
@@ -194,7 +198,7 @@ roads_min_generation
 roads_min_generation
 1
 10
-2
+3
 1
 1
 NIL
@@ -209,7 +213,7 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-0
+3
 1
 1
 NIL
@@ -303,7 +307,7 @@ factory_limit
 factory_limit
 0
 100
-1
+10
 1
 1
 NIL
@@ -348,7 +352,7 @@ water_start
 water_start
 0
 100
-1
+2
 1
 1
 NIL

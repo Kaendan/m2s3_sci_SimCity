@@ -26,7 +26,7 @@ to water_towers::produce
 end
 
 to-report water_towers::should_produce?
-  report midnight?
+  report elevenPM?
 end
 
 to water_towers::destroy

@@ -165,7 +165,7 @@ to-report people::have_job?
 end
 
 to-report people::should_update?
-  report midnight?
+  report elevenPM?
 end
 
 to-report people::should_die?

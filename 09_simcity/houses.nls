@@ -67,7 +67,7 @@ to houses::consume
 end
 
 to-report houses::should_consume?
-  report midnight?
+  report tenPM?
 end
 
 to houses::destroy
