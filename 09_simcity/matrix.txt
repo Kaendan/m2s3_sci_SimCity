@@ -9,16 +9,17 @@ people GoHome 0
 people Update 40
 people Die 50
 
-houses FindWater 0 waters 1
-houses FindElectricity 10 electricities 1
 houses Consume 20
 
 factories MakeMoney 0
 
 waters FollowRoad 0
+waters Distribute 50 houses 1
+
+electricities FollowRoad 0
+electricities Distribute 50 houses 1
 
 water_towers Produce 0
 
-electricities FollowRoad 0
-
 power_plants Produce 0
+

@@ -36,16 +36,6 @@ interaction FollowRoad
 	actions follow_road
 end
 
-interaction FindWater
-	condition not:full_water?
-	actions find_water
-end
-
-interaction FindElectricity
-	condition not:full_electricity?
-	actions find_electricity
-end
-
 interaction Produce
 	condition should_produce?
 	actions produce
@@ -69,4 +59,9 @@ end
 interaction MakeMoney
 	condition should_make_money?
 	actions make_money
+end
+
+interaction Distribute
+	condition can_distribute?
+	actions distribute
 end

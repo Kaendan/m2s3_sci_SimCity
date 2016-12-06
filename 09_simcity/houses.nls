@@ -36,13 +36,11 @@ end
 
 to houses::find_water
   set nb_water nb_water + 1
-  ask ioda:my-target [ioda:die]
   houses::change_color
 end
 
 to houses::find_electricity
   set nb_electricity nb_electricity + 1
-  ask ioda:my-target [ioda:die]
   houses::change_color
 end
 

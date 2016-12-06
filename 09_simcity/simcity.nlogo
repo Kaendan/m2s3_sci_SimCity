@@ -205,7 +205,7 @@ roads_min_generation
 roads_min_generation
 1
 10
-4
+3
 1
 1
 NIL
@@ -220,7 +220,7 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-0
+3
 1
 1
 NIL
@@ -281,7 +281,7 @@ CHOOSER
 tools
 tools
 "houses" "factories" "water_towers" "power_plants" "delete"
-0
+3
 
 MONITOR
 320

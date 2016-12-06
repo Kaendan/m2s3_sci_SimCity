@@ -38,3 +38,14 @@ to electricities::filter-neighbors
   
   ioda:filter-neighbors-on-patches (patch-set f r l b)
 end
+
+to electricities::distribute
+  ask ioda:target [
+    houses::find_electricity
+  ]
+  ioda:die
+end
+
+to-report electricities::can_distribute?
+  report [not houses::full_electricity?] of ioda:target 
+end
