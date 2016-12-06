@@ -32,7 +32,7 @@ to factories::sprout
 end
 
 to factories::make_money
-  set money money + nb_people * 10
+  set money money + nb_people * income_per_hour
 end
 
 to-report factories::should_make_money?

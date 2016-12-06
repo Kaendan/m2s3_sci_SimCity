@@ -8,7 +8,7 @@ to people::sprout [nb]
     ioda:init-agent
     set heading 0
     hide-turtle
-    set color white
+    set color orange
     set shape "car"
     create-links-with houses-here
     
@@ -60,13 +60,15 @@ to people::find_job
   ]
   
   set unemployment_time 0
-  set color orange
+  set color white
   ask ioda:my-target [set nb_people nb_people + 1]
 end
 
 to people::lose_job
-  set color white
-  people::take_car
+  set color orange
+  if not people::at_home? [
+    people::take_car
+  ]
 end
 
 to people::go_work    
@@ -124,7 +126,12 @@ to people::update
   ]
   [
     set unhappy_time 0
-    set color white
+    ifelse people::have_job? [
+      set color white
+    ]
+    [
+      set color orange
+    ]
   ]
 end
 
@@ -137,9 +144,11 @@ to people::die
     ]
   ]
   
-  set target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
-  ask target [
-    set nb_people nb_people - 1
+  if people::have_job? [
+     set target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
+     ask target [
+       set nb_people nb_people - 1
+     ] 
   ]
   
   ask my-links [die]

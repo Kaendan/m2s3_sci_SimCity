@@ -10,7 +10,7 @@ people Update 40
 people Die 50
 
 houses FindWater 0 waters 1
-houses FindElectricity 0 electricities 1
+houses FindElectricity 10 electricities 1
 houses Consume 20
 
 factories MakeMoney 0

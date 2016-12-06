@@ -23,7 +23,7 @@ end
 to houses::sprout
   sprout-houses 1 [
     ioda:init-agent
-    set color red
+    set color white
     set shape "house"
     compute_distances
     
@@ -37,11 +37,13 @@ end
 to houses::find_water
   set nb_water nb_water + 1
   ask ioda:my-target [ioda:die]
+  houses::change_color
 end
 
 to houses::find_electricity
   set nb_electricity nb_electricity + 1
   ask ioda:my-target [ioda:die]
+  houses::change_color
 end
 
 to houses::filter-neighbors
@@ -77,10 +79,31 @@ to houses::consume
   if not houses::empty_electricity? [
     set nb_electricity nb_electricity - 1
   ]
+  
+  houses::change_color
 end
 
 to-report houses::should_consume?
-  report tenPM?
+  report tenPM? and color != gray
+end
+
+to houses::change_color
+   ifelse houses::empty_water? and houses::empty_electricity? [
+    set color red
+  ]
+  [
+      ifelse houses::empty_water? [
+        set color blue
+      ] 
+      [
+        ifelse houses::empty_electricity? [
+          set color yellow
+        ]
+        [
+          set color white
+        ]
+      ]
+  ]
 end
 
 to houses::destroy
