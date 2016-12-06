@@ -2,6 +2,7 @@ __includes ["../ioda/IODA_2_3.nls" "road_builders.nls" "people.nls" "houses.nls"
 extensions [ioda matrix]
 
 globals [
+  money
   clock
   time
   game-started?
@@ -12,6 +13,7 @@ globals [
 to setup
   clear-all
 
+  set money money_start
   set clock 0
   set time 0
   set game-started? false
@@ -198,7 +200,7 @@ roads_min_generation
 roads_min_generation
 1
 10
-3
+1
 1
 1
 NIL
@@ -213,7 +215,7 @@ roads_generation_variation
 roads_generation_variation
 0
 10
-3
+1
 1
 1
 NIL
@@ -267,20 +269,20 @@ NIL
 0
 
 CHOOSER
-192
+177
 15
-330
+315
 60
 tools
 tools
 "houses" "factories" "water_towers" "power_plants" "delete"
-4
+0
 
 MONITOR
-354
-14
-411
-59
+320
+15
+377
+60
 NIL
 clock
 17
@@ -299,10 +301,10 @@ pause
 -1000
 
 SLIDER
-4
-311
-176
-344
+5
+299
+177
+332
 factory_limit
 factory_limit
 0
@@ -314,10 +316,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
-346
-176
-379
+5
+334
+177
+367
 water_limit
 water_limit
 0
@@ -344,10 +346,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-178
-346
-350
-379
+179
+334
+351
+367
 water_start
 water_start
 0
@@ -374,10 +376,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
-380
-176
-413
+5
+368
+177
+401
 electricity_limit
 electricity_limit
 0
@@ -389,10 +391,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-178
-380
-350
-413
+179
+368
+351
+401
 electricity_start
 electricity_start
 0
@@ -541,9 +543,9 @@ count people with [not people::have_job?]
 
 MONITOR
 1026
-287
+300
 1132
-332
+345
 Unemployment
 round ((count (people with [not people::have_job?])) * 100 / (count people))
 17
@@ -596,6 +598,103 @@ unhappy_max_time
 1
 NIL
 HORIZONTAL
+
+MONITOR
+381
+15
+438
+60
+NIL
+money
+17
+1
+11
+
+SLIDER
+175
+128
+347
+161
+money_start
+money_start
+0
+10000
+1000
+100
+1
+NIL
+HORIZONTAL
+
+SLIDER
+248
+460
+420
+493
+houses_price
+houses_price
+0
+1000
+50
+10
+1
+NIL
+HORIZONTAL
+
+SLIDER
+248
+495
+420
+528
+factories_price
+factories_price
+0
+1000
+50
+10
+1
+NIL
+HORIZONTAL
+
+SLIDER
+248
+530
+421
+563
+water_towers_price
+water_towers_price
+0
+1000
+50
+10
+1
+NIL
+HORIZONTAL
+
+SLIDER
+247
+565
+421
+598
+power_plants_price
+power_plants_price
+0
+1000
+50
+10
+1
+NIL
+HORIZONTAL
+
+SWITCH
+248
+425
+367
+458
+capitalism
+capitalism
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

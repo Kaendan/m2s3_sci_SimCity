@@ -65,3 +65,8 @@ interaction Die
 	condition should_die?
 	actions die
 end
+
+interaction MakeMoney
+	condition should_make_money?
+	actions make_money
+end

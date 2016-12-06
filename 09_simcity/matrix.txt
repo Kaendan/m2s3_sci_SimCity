@@ -13,6 +13,8 @@ houses FindWater 0 waters 1
 houses FindElectricity 0 electricities 1
 houses Consume 20
 
+factories MakeMoney 0
+
 waters FollowRoad 0
 
 water_towers Produce 0

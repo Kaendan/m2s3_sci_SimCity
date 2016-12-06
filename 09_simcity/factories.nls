@@ -7,7 +7,15 @@ to factories::add
   ask patch (round mouse-xcor) (round mouse-ycor) [
     if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
       [
-       factories::sprout
+        ifelse not capitalism [
+          factories::sprout
+        ]
+        [
+          if capitalism and money - factories_price >= 0 [
+            set money money - factories_price
+            factories::sprout
+          ] 
+        ]
       ]
   ]
 end
@@ -21,6 +29,14 @@ to factories::sprout
     set nb_people 0
     compute_distances
   ]
+end
+
+to factories::make_money
+  set money money + nb_people * 10
+end
+
+to-report factories::should_make_money?
+  report ((((time mod 1008) * 24 / 1008) mod 1) = 0) and people::should_work?
 end
 
 to-report factories::full?

@@ -139,7 +139,6 @@ to people::die
   
   set target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
   ask target [
-    print "non"
     set nb_people nb_people - 1
   ]
   
