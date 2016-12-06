@@ -274,7 +274,7 @@ CHOOSER
 tools
 tools
 "houses" "factories" "water_towers" "power_plants" "delete"
-0
+4
 
 MONITOR
 354
@@ -436,7 +436,7 @@ SWITCH
 125
 show_resources
 show_resources
-1
+0
 1
 -1000
 

@@ -52,7 +52,7 @@ interaction Produce
 end
 
 interaction Consume
-	condition should_consume? not:empty_water? not:empty_electricity?
+	condition should_consume?
 	actions consume
 end
 

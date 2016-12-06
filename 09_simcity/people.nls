@@ -136,6 +136,13 @@ to people::die
       set color gray
     ]
   ]
+  
+  set target one-of ((turtle-set ([other-end] of (my-links))) with [breed = factories])
+  ask target [
+    print "non"
+    set nb_people nb_people - 1
+  ]
+  
   ask my-links [die]
   ioda:die
 end

@@ -46,11 +46,11 @@ to houses::filter-neighbors
 end
 
 to-report houses::full_water?
-  report (nb_water >= water_limit) or (nb_water <= 0)
+  report nb_water >= water_limit
 end
 
 to-report houses::full_electricity?
-  report (nb_electricity >= electricity_limit) or (nb_electricity <= 0)
+  report nb_electricity >= electricity_limit
 end
 
 to-report houses::empty_water?
@@ -62,8 +62,13 @@ to-report houses::empty_electricity?
 end
 
 to houses::consume
-  set nb_water nb_water - 1
-  set nb_electricity nb_electricity - 1
+  if not houses::empty_water? [
+    set nb_water nb_water - 1
+  ]
+  
+  if not houses::empty_electricity? [
+    set nb_electricity nb_electricity - 1
+  ]
 end
 
 to-report houses::should_consume?
@@ -71,7 +76,7 @@ to-report houses::should_consume?
 end
 
 to houses::destroy
-  ask (turtle-set ([other-end] of (my-links))) [ioda:die]
+  ask (turtle-set ([other-end] of (my-links))) [people::die]
   ask my-links [die]
   ioda:die
 end
