@@ -153,9 +153,9 @@ to power_plants::destroy
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-475
+467
 11
-1018
+1010
 575
 20
 20
@@ -180,9 +180,9 @@ ticks
 30.0
 
 BUTTON
-2
+1
 15
-172
+171
 48
 setup
 setup
@@ -197,9 +197,9 @@ NIL
 1
 
 SLIDER
-3
+2
 168
-211
+210
 201
 roads_min_generation
 roads_min_generation
@@ -212,9 +212,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-212
+211
 168
-466
+465
 201
 roads_generation_variation
 roads_generation_variation
@@ -227,9 +227,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
+2
 202
-185
+184
 235
 division_ratio_min
 division_ratio_min
@@ -242,9 +242,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-186
+185
 202
-368
+367
 235
 division_ratio_max
 division_ratio_max
@@ -257,9 +257,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-3
+2
 54
-66
+65
 87
 NIL
 go
@@ -274,19 +274,19 @@ NIL
 0
 
 CHOOSER
-177
+176
 15
-315
+314
 60
 tools
 tools
 "houses" "factories" "water_towers" "power_plants" "delete"
-3
+0
 
 MONITOR
-320
+319
 15
-377
+376
 60
 NIL
 clock
@@ -295,9 +295,9 @@ clock
 11
 
 SWITCH
-3
+2
 92
-106
+105
 125
 pause
 pause
@@ -306,9 +306,9 @@ pause
 -1000
 
 SLIDER
-4
+3
 283
-176
+175
 316
 factory_limit
 factory_limit
@@ -321,9 +321,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 318
-176
+175
 351
 water_limit
 water_limit
@@ -336,9 +336,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 474
-176
+175
 507
 water_per_day
 water_per_day
@@ -351,9 +351,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 395
-176
+175
 428
 water_start
 water_start
@@ -366,9 +366,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 245
-420
+419
 278
 unemployment_max_time
 unemployment_max_time
@@ -381,9 +381,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 352
-176
+175
 385
 electricity_limit
 electricity_limit
@@ -396,9 +396,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 429
-176
+175
 462
 electricity_start
 electricity_start
@@ -411,9 +411,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-4
+3
 509
-176
+175
 542
 electricity_per_day
 electricity_per_day
@@ -426,9 +426,9 @@ NIL
 HORIZONTAL
 
 SWITCH
-123
+122
 92
-248
+247
 125
 show_links
 show_links
@@ -437,9 +437,9 @@ show_links
 -1000
 
 SWITCH
-263
+262
 92
-421
+420
 125
 show_resources
 show_resources
@@ -448,75 +448,75 @@ show_resources
 -1000
 
 MONITOR
-1024
+1014
 10
-1106
+1096
 55
-NB Houses
+Houses
 count houses
 17
 1
 11
 
 MONITOR
-1024
+1014
 57
-1113
+1103
 102
-NB Factories
+Factories
 count factories
 17
 1
 11
 
 MONITOR
-1024
+1014
 104
-1140
+1130
 149
-NB Water Towers
+Water Towers
 count water_towers
 17
 1
 11
 
 MONITOR
-1024
+1014
 151
-1134
+1124
 196
-NB Power Plants
+Power Plants
 count power_plants
 17
 1
 11
 
 MONITOR
-1142
+1132
 104
-1209
+1199
 149
-NB Water
+Water
 count waters
 17
 1
 11
 
 MONITOR
-1136
+1126
 151
-1229
+1219
 196
-NB Electricity
+Electricity
 count electricities
 17
 1
 11
 
 MONITOR
-1025
+1015
 210
-1104
+1094
 255
 Employees
 count people with [people::have_job?]
@@ -525,20 +525,20 @@ count people with [people::have_job?]
 11
 
 MONITOR
-1109
+1099
 10
-1182
+1172
 55
-NB People
+People
 count people
 17
 1
 11
 
 MONITOR
-1108
+1098
 210
-1241
+1231
 255
 Unemployed Persons
 count people with [not people::have_job?]
@@ -547,9 +547,9 @@ count people with [not people::have_job?]
 11
 
 MONITOR
-1025
+1015
 259
-1131
+1121
 304
 Unemployment
 round ((count (people with [not people::have_job?])) * 100 / (count people))
@@ -558,9 +558,9 @@ round ((count (people with [not people::have_job?])) * 100 / (count people))
 11
 
 BUTTON
-3
+2
 128
-164
+163
 161
 Delete Empty Houses
 ask (houses with [color = gray]) [ioda:die]
@@ -575,9 +575,9 @@ NIL
 1
 
 SLIDER
-4
+3
 245
-176
+175
 278
 people_per_house
 people_per_house
@@ -590,24 +590,24 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 280
-382
+381
 313
 unhappy_max_time
 unhappy_max_time
 0
 100
-100
+7
 1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-381
+380
 15
-448
+447
 60
 NIL
 money
@@ -616,9 +616,9 @@ money
 11
 
 SLIDER
-208
+207
 362
-380
+379
 395
 money_start
 money_start
@@ -631,9 +631,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 434
-380
+379
 467
 houses_price
 houses_price
@@ -646,9 +646,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 469
-380
+379
 502
 factories_price
 factories_price
@@ -661,9 +661,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 504
-381
+380
 537
 water_towers_price
 water_towers_price
@@ -676,9 +676,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-208
+207
 539
-382
+381
 572
 power_plants_price
 power_plants_price
@@ -691,20 +691,20 @@ NIL
 HORIZONTAL
 
 SWITCH
-208
+207
 325
-327
+368
 358
-capitalism
-capitalism
+money_activated
+money_activated
 1
 1
 -1000
 
 SLIDER
-208
+207
 397
-380
+379
 430
 income_per_hour
 income_per_hour
@@ -717,9 +717,9 @@ NIL
 HORIZONTAL
 
 MONITOR
-1024
+1014
 315
-1154
+1144
 360
 Houses Without Water
 count houses with [color = blue or color = red]
@@ -728,15 +728,33 @@ count houses with [color = blue or color = red]
 11
 
 MONITOR
-1024
+1014
 362
-1197
+1187
 407
 Houses Without Electricity
 count houses with [color = yellow or color = red]
 17
 1
 11
+
+PLOT
+1015
+424
+1215
+574
+happiness / time
+time
+happiness
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -15040220 true "" "let happy 0\nif length ([happiness] of people) > 0\n[\n set happy median [happiness] of people\n]\nplotxy (floor (time / 42)) happy"
 
 @#$#@#$#@
 ## WHAT IS IT?

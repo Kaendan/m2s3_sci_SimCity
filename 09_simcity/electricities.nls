@@ -47,5 +47,5 @@ to electricities::distribute
 end
 
 to-report electricities::can_distribute?
-  report [not houses::full_electricity?] of ioda:target 
+  report [not houses::full_electricity?] of ioda:target and [color != gray] of ioda:target
 end

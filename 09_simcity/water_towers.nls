@@ -7,11 +7,11 @@ to water_towers::add
   ask patch (round mouse-xcor) (round mouse-ycor) [
     if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
       [
-        ifelse not capitalism [
+        ifelse not money_activated [
           water_towers::sprout
         ]
         [
-          if capitalism and money - water_towers_price >= 0 [
+          if money_activated and money - water_towers_price >= 0 [
             set money money - water_towers_price
             water_towers::sprout
           ] 

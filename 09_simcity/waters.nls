@@ -47,5 +47,5 @@ to waters::distribute
 end
 
 to-report waters::can_distribute?
-  report [not houses::full_water?] of ioda:target 
+  report [not houses::full_water?] of ioda:target and [color != gray] of ioda:target
 end

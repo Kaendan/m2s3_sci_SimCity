@@ -7,11 +7,11 @@ to houses::add
   ask patch (round mouse-xcor) (round mouse-ycor) [
     if pcolor = green and count turtles-here = 0 and any? neighbors4 with [pcolor = black]
       [
-        ifelse not capitalism [
+        ifelse not money_activated [
           houses::sprout
         ]
         [
-          if capitalism and money - houses_price >= 0 [
+          if money_activated and money - houses_price >= 0 [
             set money money - houses_price
             houses::sprout
           ] 

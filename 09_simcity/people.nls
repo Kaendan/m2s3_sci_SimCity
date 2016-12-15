@@ -21,7 +21,13 @@ to people::sprout [nb]
     
     let my_water [nb_water] of one-of houses-here
     let my_electricity [nb_electricity] of one-of houses-here
-    let my_job unemployment_max_time - unemployment_time
+    
+    let my_job 0
+  
+    if (unemployment_max_time - unemployment_time) > 0 [
+      set my_job 1
+    ]
+  
     set happiness (my_water * my_electricity * my_job)
   ]
 end
